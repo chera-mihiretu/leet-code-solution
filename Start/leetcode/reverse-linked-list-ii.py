@@ -5,34 +5,34 @@
 #         self.next = next
 class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
-        slow = start = fast = head
-        if right == left:
-            return head
-        for i in range(right):
-            fast = fast.next
-        for i in range(left-1):
-            start = start.next
-            if i != 0:
-                slow = slow.next
-        #reversing inside link
-        prev = fast
-        times = right - left + 1
-        while times > 0:
-            hold = start.next
-            start.next = prev
-            prev = start
-            times -= 1
-            if times  <= 0:
-                if left != 1:
-                    slow.next = start
-                else:
-                    head = start
-                continue
-            start = hold
-            
+        # this is to handle an error that occurs when start is 1
+        new_head = ListNode()
+        new_head.next = head
+        left_node = right_node = prev = new_head
+        right += 1
+        # to find the right and left elements
+        while right:
+            if left:
+                left_node = left_node.next
+                left -=1
+                if left:
+                    prev = prev.next
+            right_node = right_node.next
+            right -= 1
         
-        return head
+        # reversing element in between right and left
 
+        start = left_node
+        last_node = right_node
+        while start != last_node:
+            hold = start.next
+            start.next = right_node
+            right_node = start
+            start = hold
+        prev.next = right_node
+
+        return new_head.next
+        
 
         
 
