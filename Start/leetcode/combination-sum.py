@@ -1,14 +1,22 @@
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        answer = set()
-        def rec(li, an_li):
-            if sum(an_li) == target:
-                answer.add(tuple(sorted(an_li)))
-                return
-            if sum(an_li) > target:
-                return 
-            for i in range(len(li)):
-                rec(li, an_li + [li[i]])
-        rec(candidates, [])
-        return answer
 
+
+
+        ans = []
+        def helper(idx, path, sum):
+            if sum == target:
+                ans.append(path.copy())
+                return
+            if sum > target or idx == len(candidates):
+                return
+            
+            path.append(candidates[idx])
+            sum +=candidates[idx]
+
+            helper(idx, path, sum)
+            sum -= path.pop()
+            helper(idx + 1, path, sum)
+
+        helper(0, [], 0)
+        return ans
